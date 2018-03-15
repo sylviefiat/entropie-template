@@ -25,7 +25,8 @@ export class AuthService {
     var pouchOpts = {
       skipSetup: true
     };
-    this.db = new PouchDB('http://entropie-dev:5984/_users', pouchOpts);    
+    this.db = new PouchDB('http://bdmerdb:5984/_users', pouchOpts);   
+    console.log("localhost"); 
   }
 
   login({ username, password }: Authenticate): Observable<any> {
