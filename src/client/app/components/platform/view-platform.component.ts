@@ -93,6 +93,7 @@ export class ViewPlatformComponent implements OnInit, OnDestroy {
             case "zoneForm":
             case "zoneImport":
             case "surveyForm":
+            case "globalImport":
             case "surveyImport":
             case "zonePrefImport":
             case "transectImport":
