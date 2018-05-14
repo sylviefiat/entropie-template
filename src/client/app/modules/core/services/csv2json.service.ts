@@ -320,8 +320,6 @@ export class Csv2JsonService {
     }
 
     csv2(type: string, csvFile: any): Observable<any> {
-        console.log(type);
-        console.log(csvFile);
         return Observable.create(
             observable => {
                 this.papa.parse(csvFile, {
@@ -339,7 +337,6 @@ export class Csv2JsonService {
                 });
             })
             .mergeMap(data => {
-                console.log(data);
                 let res;
                 switch (type) {
                     case "species":
