@@ -14,6 +14,7 @@ export interface IPlatformState {
     entities: Platform[];
     ids: string[];
     error: string | null;
+    importErrors: string[];
     msg: string | null;
 }
 
@@ -29,6 +30,7 @@ export const platformInitialState: IPlatformState = {
     entities: [],
     ids: [],
     error: null,
+    importErrors:[],
     msg: null
 };
 
@@ -76,6 +78,10 @@ export function getPlatformIds(state$: Observable<IPlatformState>) {
 
 export function getPlatformError(state$: Observable<IPlatformState>) {
     return state$.select(state => state.error);
+}
+
+export function getPlatformImportErrors(state$: Observable<IPlatformState>) {
+    return state$.select(state => state.importErrors);
 }
 
 export function getPlatformMsg(state$: Observable<IPlatformState>) {
