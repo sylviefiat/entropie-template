@@ -18,7 +18,7 @@ export class Csv2JsonService implements OnInit{
     }
 
     ngOnInit() {
-        this.authCountry$ = this.store.let(getAuthCountry);
+
     }
 
     private extractSpeciesData(arrayData): Species[] { // Input csv data to the function
@@ -123,6 +123,12 @@ export class Csv2JsonService implements OnInit{
                             throw new Error('Wrong CSV File Unknown field detected');
                     }
                 }
+                if(!st.codeCountry){
+                    this.store.let(getAuthCountry).subscribe((res)=>{
+                        st.codeCountry = res["code"];
+                    })
+                }
+                lines.push(st);
             }
         }
 
