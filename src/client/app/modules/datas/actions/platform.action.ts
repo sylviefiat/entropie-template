@@ -39,6 +39,9 @@ export namespace PlatformAction {
       ADD_TRANSECT_SUCCESS: string;
       IMPORT_TRANSECT: string;
       IMPORT_TRANSECT_SUCCESS: string;
+      CHECK_TRANSECT_CSV_FILE: string;
+      CHECK_TRANSECT_ADD_ERROR: string;
+      CHECK_TRANSECT_SUCCESS: string;
       REMOVE_TRANSECT: string;
       REMOVE_TRANSECT_SUCCESS: string;
       REMOVE_TRANSECT_FAIL: string;
@@ -92,6 +95,9 @@ export namespace PlatformAction {
       ADD_TRANSECT_SUCCESS: type(`${PLATFORM} Add Transect Success`),
       IMPORT_TRANSECT: type(`${PLATFORM} Import Transect`),
       IMPORT_TRANSECT_SUCCESS:type(`${PLATFORM} Import Transect Success`),
+      CHECK_TRANSECT_CSV_FILE:type(`${PLATFORM} Check Transect Csv file`),
+      CHECK_TRANSECT_ADD_ERROR:type(`${PLATFORM} Check Transect Csv file add error`),
+      CHECK_TRANSECT_SUCCESS:type(`${PLATFORM} Check Transect Csv file success`),
       REMOVE_TRANSECT: type(`${PLATFORM} Remove Transect`),
       REMOVE_TRANSECT_SUCCESS: type(`${PLATFORM} Remove Transect Success`),
       REMOVE_TRANSECT_FAIL: type(`${PLATFORM} Remove Transect Fail`), 
@@ -377,6 +383,24 @@ export namespace PlatformAction {
     constructor(public payload: Transect) {}
   }
 
+  export class CheckTransectCsvFile implements Action {
+    readonly type = ActionTypes.CHECK_TRANSECT_CSV_FILE;
+
+    constructor(public payload: any) {}
+  }
+
+  export class CheckTransectAddErrorAction implements Action {
+    readonly type = ActionTypes.CHECK_TRANSECT_ADD_ERROR;
+
+    constructor(public payload: string) {}
+  }
+
+  export class CheckTransectSuccessAction implements Action {
+    readonly type = ActionTypes.CHECK_TRANSECT_SUCCESS;
+
+    constructor(public payload: any) {}
+  }
+
   /**
    * Remove Transect from Zone - Platform  Actions
    */
@@ -522,6 +546,9 @@ export namespace PlatformAction {
     | AddTransectSuccessAction
     | ImportTransectAction
     | ImportTransectSuccessAction
+    | CheckTransectCsvFile
+    | CheckTransectAddErrorAction
+    | CheckTransectSuccessAction
     | RemoveTransectAction
     | RemoveTransectSuccessAction
     | RemoveTransectFailAction
