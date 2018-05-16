@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { PapaParseService } from 'ngx-papaparse';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
@@ -6,13 +7,18 @@ import { of } from 'rxjs/observable/of';
 import { MomentService } from './moment.service';
 import { Species, NameI18N, CoefsAB, Conversion, BiologicDimensions, LegalDimensions } from '../../datas/models/species';
 import { Platform, Zone, Transect, Survey, ZonePreference, Count, Mesure } from '../../datas/models/platform';
-
+import { IAppState, getAuthCountry } from '../../ngrx/index';
 @Injectable()
-export class Csv2JsonService {
+export class Csv2JsonService implements OnInit{
     static COMMA = ',';
     static SEMICOLON = ';';
+    authCountry$: Observable<string[]>;
 
-    constructor(private papa: PapaParseService, private ms: MomentService) {
+    constructor(private store: Store<IAppState>, private papa: PapaParseService, private ms: MomentService) {
+    }
+
+    ngOnInit() {
+        this.authCountry$ = this.store.let(getAuthCountry);
     }
 
     private extractSpeciesData(arrayData): Species[] { // Input csv data to the function
@@ -117,11 +123,11 @@ export class Csv2JsonService {
                             throw new Error('Wrong CSV File Unknown field detected');
                     }
                 }
-                lines.push(st);
             }
         }
-        console.log(lines);
-        //console.log(lines); //The data in the form of 2 dimensional array.
+
+        //if(lines.codeCountry)
+        console.log(lines); //The data in the form of 2 dimensional array.
         return lines;
     }
 
