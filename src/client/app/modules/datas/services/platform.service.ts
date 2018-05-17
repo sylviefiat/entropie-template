@@ -173,8 +173,8 @@ export class PlatformService {
     .mergeMap(st => {  
       let zn = st.zones.filter(z => z.properties.code === transect.codeZone)[0];
       if(zn){
-        if(zn.transects.filter(t => t.code === transect.code).length > -1){
-          zn.transects = [ ...zn.transects.filter(t => t.code !== transect.code), transect];
+        if(zn.transects.filter(t => t.properties.code === transect.properties.code).length > -1){
+          zn.transects = [ ...zn.transects.filter(t => t.properties.code !== transect.properties.code), transect];
         }
         st.zones = [ ...st.zones.filter(z => z.properties.code !== zn.properties.code), zn];
       } 
@@ -187,30 +187,37 @@ export class PlatformService {
     })
   }
 
-  importTransectVerification(transect, platform: Platform): Observable<string>{
-    if(transect.code_platform === platform.code && platform.zones.filter(zone => transect.code_zone === zone.properties.code)){
-      console.log("ui")
+  importTransectVerification(transect: Transect, platform: Platform): Observable<string>{
+    if(transect.codePlatform === platform.code){
+      for(let i = 0; i < platform.zones.length; i++){
+        if(transect.codeZone === platform.zones[i].properties.code){
+          return of('');
+        }
+
+        if(transect.codeZone !== platform.zones[i].properties.code && i === platform.zones.length - 1){
+          return of('Transect '+transect.properties.name+' cannot be inserted because codeZone '+transect.codeZone+' is not in the database');
+        }
+      }
+    }else{
+      return of('Transect '+transect.properties.name+' cannot be inserted because codePlatform '+transect.codePlatform+' is not in the database');
     }
 
-    // if(countries.filter(country => country.code === platform.codeCountry).length===0)
-    //   return of('Platform '+platform.code+' cannot be inserted because country '+platform.codeCountry+' is not in the database');  
-    // return of(''); 
-    return of(''); 
+    return of('');
   }
 
   removeTransect(transect: Transect): Observable<Transect> {    
     return this.getPlatform(transect.codePlatform)
-    .filter(platform => platform!==null)
-    .mergeMap(st => {
-      let zn = st.zones.filter(z => z.properties.code === transect.codeZone)[0];
-      zn.transects = zn.transects.filter(t => t.code !== transect.code);
-      st.zones = [...st.zones.filter(z => z.properties.code !== transect.codeZone),zn];
-      return fromPromise(this.db.put(st));
-    })
-    .filter((response: ResponsePDB) => { return response.ok; })
-    .mergeMap(response => {
-      return of(transect);
-    })
+      .filter(platform => platform!==null)
+      .mergeMap(st => {
+        let zn = st.zones.filter(z => z.properties.code === transect.codeZone)[0];
+        zn.transects = zn.transects.filter(t => t.properties.code !== transect.properties.code);
+        st.zones = [...st.zones.filter(z => z.properties.code !== transect.codeZone),zn];
+        return fromPromise(this.db.put(st));
+      })
+      .filter((response: ResponsePDB) => { return response.ok; })
+      .mergeMap(response => {
+        return of(transect);
+      })
   }
 
   editZonePref(platform: Platform, zonePref: ZonePreference): Observable<ZonePreference> {

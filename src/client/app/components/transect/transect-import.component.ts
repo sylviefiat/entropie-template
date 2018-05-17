@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { RouterExtensions, Config } from '../../modules/core/index';
 import { Platform, Zone } from '../../modules/datas/models/index';
 
-import { IAppState, getPlatformPageError, getSelectedPlatform, getPlatformPageMsg, getLangues } from '../../modules/ngrx/index';
+import { IAppState, getPlatformPageError, getSelectedPlatform, getPlatformPageMsg, getPlatformImpErrors, getLangues } from '../../modules/ngrx/index';
 import { PlatformAction } from '../../modules/datas/actions/index';
 import { CountriesAction } from '../../modules/countries/actions/index';
 
@@ -27,15 +27,18 @@ export class TransectImportComponent implements OnInit{
     @Output() upload = new EventEmitter<any>();
     @Output() err = new EventEmitter<string>();
     @Output() back = new EventEmitter();
+    importError$: Observable<string[]>;
 
     needHelp: boolean = false;
     private csvFile: string;
     private docs_repo: string;
+    importCsvFile: any = null;
 
     constructor(private store: Store<IAppState>, public routerext: RouterExtensions, route: ActivatedRoute) {
     }
 
     ngOnInit() {
+        this.importError$ = this.store.let(getPlatformImpErrors);
         this.store.let(getLangues).subscribe((l: any) => {
             this.docs_repo = "../../../assets/files/";
             this.csvFile = "importTransect-"+l+".csv";
@@ -45,8 +48,8 @@ export class TransectImportComponent implements OnInit{
     handleUpload(csvFile: any): void {
         let reader = new FileReader();
         if (csvFile.target.files && csvFile.target.files.length > 0) {
-            this.check(csvFile.target.files[0])
-            //this.upload.emit(csvFile.target.files[0]);
+            this.importCsvFile = csvFile.target.files[0];
+            this.check(this.importCsvFile)
         } else {
             this.err.emit('No csv file found');
         }
@@ -54,6 +57,10 @@ export class TransectImportComponent implements OnInit{
 
     check(csvFile){
         this.store.dispatch(new PlatformAction.CheckTransectCsvFile(csvFile));
+    }
+
+    send(){
+        this.upload.emit(this.importCsvFile);
     }
 
     changeNeedHelp() {

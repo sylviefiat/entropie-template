@@ -160,12 +160,12 @@ export class PlatformEffects {
   @Effect()
   checkTransectCsv$: Observable<Action> = this.actions$
     .ofType(PlatformAction.ActionTypes.CHECK_TRANSECT_CSV_FILE)  
-    //.do(() => this.store.dispatch(new PlatformAction.RemoveMsgAction()))
+    .do(() => this.store.dispatch(new PlatformAction.RemoveMsgAction()))
     .map((action: PlatformAction.CheckTransectCsvFile) => action.payload)
     .mergeMap((transect: Transect) =>this.csv2jsonService.csv2('transect', transect))
     // fait automatiquement une boucle sur les platforms retournées
     .withLatestFrom(this.store.let(getSelectedPlatform))
-    .mergeMap((value: [any, Platform]) => this.platformService.importTransectVerification(value[0], value[1]))
+    .mergeMap((value: [Transect, Platform]) => this.platformService.importTransectVerification(value[0], value[1]))
     .map(error => new PlatformAction.CheckTransectAddErrorAction(error));
 
   @Effect()
@@ -309,7 +309,7 @@ export class PlatformEffects {
   addTransectSuccess$: Observable<Action> = this.actions$
     .ofType(PlatformAction.ActionTypes.ADD_TRANSECT_SUCCESS)
     .map((action: PlatformAction.AddTransectSuccessAction) => action.payload)
-    .mergeMap((transect: Transect) => this.router.navigate(['/transect/' + transect.codePlatform + '/'+ transect.codeZone + '/' + transect.code]))
+    .mergeMap((transect: Transect) => this.router.navigate(['/transect/' + transect.codePlatform + '/'+ transect.codeZone + '/' + transect.properties.code]))
     .delay(3000)
     .map(() => new PlatformAction.RemoveMsgAction()); 
 

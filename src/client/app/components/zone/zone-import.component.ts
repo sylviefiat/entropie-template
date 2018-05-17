@@ -29,14 +29,15 @@ export class ZoneImportComponent implements OnInit{
     @Input() platform: Platform;
     @Input() zone: Zone | null;
     @Input() error: string | null;
-    @Input() msg: string | null;
     @Output() upload = new EventEmitter<any>();
     @Output() err = new EventEmitter<string>();
     @Output() back = new EventEmitter();
+    @Input() msg: boolean = false;
 
     needHelp: boolean = false;
     private kmlFile: string;
     private docs_repo: string;
+    importKmlFile: any = null;
 
     constructor(private mapStaticService: MapStaticService, private nameRefactorService: NameRefactorService, private store: Store<IAppState>, public routerext: RouterExtensions, route: ActivatedRoute) {
 
@@ -78,8 +79,13 @@ export class ZoneImportComponent implements OnInit{
 
     handleUpload(kmlFile: any): void {
       if (kmlFile.target.files && kmlFile.target.files.length > 0) {
-        this.kmlToGeoJson(kmlFile.target.files['0']);
+        this.importKmlFile = kmlFile.target.files['0'];
+        this.msg = true;
       }
+    }
+
+    send(){
+        this.kmlToGeoJson(this.importKmlFile);
     }
 
     changeNeedHelp() {
@@ -92,6 +98,15 @@ export class ZoneImportComponent implements OnInit{
 
     getKmlZonesUrl() {
         return this.docs_repo + this.kmlFile;
+    }
+
+    return() {
+        this.routerext.navigate(['/platform/'], {
+            transition: {
+                duration: 1000,
+                name: 'slideTop',
+            }
+        });
     }
 
     cancel() {
