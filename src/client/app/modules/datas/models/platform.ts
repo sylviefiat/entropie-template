@@ -48,6 +48,7 @@ export interface ZonePreference {
     codeSpecies: string;
     presence: string;
     infoSource: string;
+    picture: string;
 }
 
 export interface Survey {
