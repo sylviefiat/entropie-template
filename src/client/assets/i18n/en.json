@@ -292,6 +292,8 @@
   "SEND": "Send",
   "DELETE_CSV": "Delete",
   "LIST_ERROR_PLATFORM": "List of concerned platforms",
+  "LIST_ERROR_SURVEY": "List of concerned surveys",
+  "LIST_ERROR_TRANSECT": "List of concerned transects",
   "TRANSECT_NAME": "Name of transect",
   "TRANSECT_COORD": "Coordinates of transect",
   "TRANSECT_ERROR": "Transect not valid.",

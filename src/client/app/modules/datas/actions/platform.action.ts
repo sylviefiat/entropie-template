@@ -32,6 +32,9 @@ export namespace PlatformAction {
       ADD_SURVEY_SUCCESS: string;
       IMPORT_SURVEY: string;
       IMPORT_SURVEY_SUCCESS: string;
+      CHECK_SURVEY_CSV_FILE: string;
+      CHECK_SURVEY_ADD_ERROR: string;
+      CHECK_SURVEY_SUCCESS: string;
       REMOVE_SURVEY: string;
       REMOVE_SURVEY_SUCCESS: string;
       REMOVE_SURVEY_FAIL: string;
@@ -105,6 +108,9 @@ export namespace PlatformAction {
       ADD_SURVEY_SUCCESS: type(`${PLATFORM} Add Survey Success`),
       IMPORT_SURVEY: type(`${PLATFORM} Import Survey`),
       IMPORT_SURVEY_SUCCESS:type(`${PLATFORM} Import Survey Success`),
+      CHECK_SURVEY_CSV_FILE:type(`${PLATFORM} Check Survey Csv file`),
+      CHECK_SURVEY_ADD_ERROR:type(`${PLATFORM} Check Survey Csv file add error`),
+      CHECK_SURVEY_SUCCESS:type(`${PLATFORM} Check Survey Csv file success`),
       REMOVE_SURVEY: type(`${PLATFORM} Remove Survey`),
       REMOVE_SURVEY_SUCCESS: type(`${PLATFORM} Remove Survey Success`),
       REMOVE_SURVEY_FAIL: type(`${PLATFORM} Remove Survey Fail`),   
@@ -333,6 +339,24 @@ export namespace PlatformAction {
     readonly type = ActionTypes.IMPORT_SURVEY_SUCCESS;
 
     constructor(public payload: Survey) {}
+  }
+
+  export class CheckSurveyCsvFile implements Action {
+    readonly type = ActionTypes.CHECK_SURVEY_CSV_FILE;
+
+    constructor(public payload: any) {}
+  }
+
+  export class CheckSurveyAddErrorAction implements Action {
+    readonly type = ActionTypes.CHECK_SURVEY_ADD_ERROR;
+
+    constructor(public payload: string) {}
+  }
+
+  export class CheckSurveySuccessAction implements Action {
+    readonly type = ActionTypes.CHECK_SURVEY_SUCCESS;
+
+    constructor(public payload: any) {}
   }
 
   /**

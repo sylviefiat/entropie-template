@@ -46,7 +46,6 @@ export class TransectImportComponent implements OnInit{
     }
 
     handleUpload(csvFile: any): void {
-        let reader = new FileReader();
         if (csvFile.target.files && csvFile.target.files.length > 0) {
             this.importCsvFile = csvFile.target.files[0];
             this.check(this.importCsvFile)

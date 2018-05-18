@@ -6,7 +6,7 @@
         <ng-template #activedbutton>
           <button (click)="send()" class="btn send">{{ 'SEND' | translate }}</button>
         </ng-template>
-        <button (click)="return()" class="btn btn-danger">{{ 'CANCEL' | translate }}</button>        
+        <button (click)="cancel()" class="btn btn-danger">{{ 'CANCEL' | translate }}</button>        
       </mat-card-content>   
       <mat-card-content class="error" *ngIf="error" align="center">{{ error }}</mat-card-content>
       <mat-card-content class="msg" *ngIf="msg" align="start">Import can be performed</mat-card-content>     

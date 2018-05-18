@@ -100,15 +100,6 @@ export class ZoneImportComponent implements OnInit{
         return this.docs_repo + this.kmlFile;
     }
 
-    return() {
-        this.routerext.navigate(['/platform/'], {
-            transition: {
-                duration: 1000,
-                name: 'slideTop',
-            }
-        });
-    }
-
     cancel() {
         this.back.emit(this.platform.code);
     }

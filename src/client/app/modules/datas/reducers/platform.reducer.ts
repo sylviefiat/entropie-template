@@ -81,7 +81,6 @@ export function platformReducer(
         case PlatformAction.ActionTypes.ADD_SURVEY_SUCCESS:
         case PlatformAction.ActionTypes.IMPORT_SURVEY_SUCCESS: {
             const addedsurvey = action.payload;
-            console.log(addedsurvey);
             const platforms = state.entities.filter(platform => addedsurvey.codePlatform !== platform._id);
             const modifiedPlatform = state.entities.filter(platform => addedsurvey.codePlatform === platform._id)[0];
             modifiedPlatform.surveys = [...modifiedPlatform.surveys.filter(survey => addedsurvey.code !== survey.code),addedsurvey];
@@ -92,6 +91,15 @@ export function platformReducer(
                 ids: [...state.ids.filter(id => addedsurvey.codePlatform !== id), ...addedsurvey.codePlatform],
                 error: null,
                 msg: action.type===PlatformAction.ActionTypes.IMPORT_PLATFORM_SUCCESS?"Surveys registered with success":"Survey registered with success"
+            }
+        }
+
+        case PlatformAction.ActionTypes.CHECK_SURVEY_ADD_ERROR: {
+            return {
+                ...state,
+                error: (action.payload !== '' && action.payload.length >0)?"Import cannot be perform before errors below are resolved":null,
+                msg: (action.payload === '' || action.payload.length === 0)?"Import can be performed":null,
+                importErrors: (action.payload !== '' && action.payload.length >0)?[...state.importErrors, action.payload]:[...state.importErrors]
             }
         }
 

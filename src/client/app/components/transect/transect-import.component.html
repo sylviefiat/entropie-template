@@ -35,7 +35,7 @@
     </mat-card-actions>
 
     <mat-card-actions align="start" *ngIf="(importError$ | async)?.length > 0">
-      <h2 class="errorPlat">{{'LIST_ERROR_TRANSECT' | translate}}</h2>
+      <h2 class="errorTransect">{{'LIST_ERROR_TRANSECT' | translate}}</h2>
       <mat-list>
         <div *ngFor="let transect of (importError$ | async)">
           <mat-list-item class="errorTransect"> 
