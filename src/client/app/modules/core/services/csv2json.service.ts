@@ -8,6 +8,7 @@ import { MomentService } from './moment.service';
 import { MapStaticService} from './map-static.service';
 import { Species, NameI18N, CoefsAB, Conversion, BiologicDimensions, LegalDimensions } from '../../datas/models/species';
 import { Platform, Zone, Transect, Survey, ZonePreference, Count, Mesure } from '../../datas/models/platform';
+import { PlatformAction } from '../../datas/actions/index';
 import { IAppState, getSpeciesInApp } from '../../ngrx/index';
 
 @Injectable()
@@ -226,8 +227,9 @@ export class Csv2JsonService {
                             header = headers[j].replace(/_([a-z])/g, function(g) { return g[1].toUpperCase(); });
                             st[headers[j]] = data[j];
                             break;
-                        default:                            
-                            throw new Error('Wrong CSV File Unknown field detected');
+                        default:
+                            console.log("gjhsdgfj")
+                            throw new Error('Wrong CSV File Unknown field detected ' + headers[j]);
                     }
                 }
                 lines.push(st);
@@ -313,11 +315,11 @@ export class Csv2JsonService {
                 let header;
                 for (let j = 0; j < headers.length; j++) {
                     switch (headers[j]) {
-                        case "code_platform":
-                        case "code_zone":
-                        case "code_survey":
+                        case "codePlatform":
+                        case "codeZone":
+                        case "codeSurvey":
                         case "code":
-                        case "code_transect":
+                        case "codeTransect":
                             header = headers[j].replace(/_([a-z])/g, function(g) { return g[1].toUpperCase(); });
                             ct[headers[j]] = data[j];
                             break;
@@ -344,17 +346,17 @@ export class Csv2JsonService {
                                 ct.mesures.push({codeSpecies: sp, long: longlarg[0], larg: (longlarg.length>0)?longlarg[1]:'0'});
                             }
                             break;
-                        case "code_species":
+                        case "codeSpecies":
                             ct['monospecies'] = true;
                             break;
                         default:                            
-                            throw new Error('Wrong CSV File Unknown field detected');
+                            throw new Error('Wrong CSV File Unknown field detected:');
                     }
                 }
                 lines.push(ct);
             }
         }
-        //console.log(lines); //The data in the form of 2 dimensional array.
+        console.log(lines); //The data in the form of 2 dimensional array.
         return lines;
     }
 
@@ -398,7 +400,6 @@ export class Csv2JsonService {
                         res = this.extractTransectData(data);
                         break;
                     case "count":
-                        console.log(data);
                         res = this.extractCountData(data);
                         break;
                     default:
