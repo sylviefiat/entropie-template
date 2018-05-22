@@ -105,6 +105,7 @@ export class Csv2JsonService {
         let allTextLines = arrayData.data;
         let headers = allTextLines[0];
         let lines: Platform[] = [];
+        let errorTab = [];
         for (let i = 1; i < allTextLines.length; i++) {
             let data = allTextLines[i];
             if (data.length == headers.length) {
@@ -119,11 +120,28 @@ export class Csv2JsonService {
                             st[headers[j]] = data[j];
                             break;
                         default:
-                            throw new Error('Wrong CSV File Unknown field detected');
+                            if(!errorTab.includes(headers[j])){
+                                errorTab.push(headers[j]);
+                            }  
+                            break;
                     }
                 }
                 lines.push(st);
             }
+        }
+
+        if(errorTab.length !== 0){
+            let string = "";
+            for(let i in errorTab){
+                if(parseInt(i) === errorTab.length - 1){
+                    string+=errorTab[i]+"."    
+                }else{
+                    string+=errorTab[i]+", ";
+                }
+            }
+
+            this.store.dispatch(new PlatformAction.AddPlatformFailAction(string))
+            return [];
         }
 
         //console.log(lines); //The data in the form of 2 dimensional array.
@@ -163,6 +181,7 @@ export class Csv2JsonService {
         let delimiter = arrayData.meta.delimiter;
         let headers = allTextLines[0];
         let lines: Survey[] = [];
+        let errorTab = [];
         for (let i = 1; i < allTextLines.length; i++) {            
             let data = allTextLines[i];
             if (data.length == headers.length) {
@@ -195,12 +214,30 @@ export class Csv2JsonService {
                             st[headers[j]] = d;
                             break;
                         default:                            
-                            throw new Error('Wrong CSV File Unknown field detected');
+                            if(!errorTab.includes(headers[j])){
+                                errorTab.push(headers[j]);
+                            }  
+                            break;
                     }
                 }
                 lines.push(st);
             }
         }
+
+        if(errorTab.length !== 0){
+            let string = "";
+            for(let i in errorTab){
+                if(parseInt(i) === errorTab.length - 1){
+                    string+=errorTab[i]+"."    
+                }else{
+                    string+=errorTab[i]+", ";
+                }
+            }
+
+            this.store.dispatch(new PlatformAction.AddPlatformFailAction(string))
+            return [];
+        }
+
         //console.log(lines); //The data in the form of 2 dimensional array.
         return lines;
     }
@@ -210,6 +247,7 @@ export class Csv2JsonService {
         let headers = allTextLines[0];
         let lines = [];
         let geojsons = [];
+        let errorTab = [];
         for (let i = 1; i < allTextLines.length; i++) {            
             let data = allTextLines[i];
             if (data.length == headers.length) {
@@ -228,12 +266,28 @@ export class Csv2JsonService {
                             st[headers[j]] = data[j];
                             break;
                         default:
-                            console.log("gjhsdgfj")
-                            throw new Error('Wrong CSV File Unknown field detected ' + headers[j]);
+                            if(!errorTab.includes(headers[j])){
+                                errorTab.push(headers[j]);
+                            }  
+                            break;
                     }
                 }
                 lines.push(st);
             }
+        }
+
+        if(errorTab.length !== 0){
+            let string = "";
+            for(let i in errorTab){
+                if(parseInt(i) === errorTab.length - 1){
+                    string+=errorTab[i]+"."    
+                }else{
+                    string+=errorTab[i]+", ";
+                }
+            }
+
+            this.store.dispatch(new PlatformAction.AddPlatformFailAction(string))
+            return [];
         }
 
         for(let i = 0; i < lines.length; i++){
@@ -268,6 +322,7 @@ export class Csv2JsonService {
         let allTextLines = arrayData.data;
         let headers = allTextLines[0];
         let lines: ZonePreference[] = [];
+        let errorTab = [];
         for (let i = 1; i < allTextLines.length; i++) {            
             let data = allTextLines[i];
             if (data.length == headers.length) {
@@ -285,8 +340,11 @@ export class Csv2JsonService {
                             header = headers[j].replace(/_([a-z])/g, function(g) { return g[1].toUpperCase(); });
                             st[headers[j]] = data[j];
                             break;
-                        default:                            
-                            throw new Error('Wrong CSV File Unknown field detected');
+                        default:
+                            if(!errorTab.includes(headers[j])){
+                                errorTab.push(headers[j]);
+                            }       
+                            break;                     
                     }
                 }
                 species$.subscribe((species) =>{
@@ -299,6 +357,21 @@ export class Csv2JsonService {
                 lines.push(st);
             }
         }
+
+        if(errorTab.length !== 0){
+            let string = "";
+            for(let i in errorTab){
+                if(parseInt(i) === errorTab.length - 1){
+                    string+=errorTab[i]+"."    
+                }else{
+                    string+=errorTab[i]+", ";
+                }
+            }
+
+            this.store.dispatch(new PlatformAction.AddPlatformFailAction(string))
+            return [];
+        }
+
         //console.log(lines); //The data in the form of 2 dimensional array.
         return lines;
     }
@@ -308,6 +381,7 @@ export class Csv2JsonService {
         let delimiter = arrayData.meta.delimiter;
         let headers = allTextLines[0];
         let lines: Count[] = [];
+        let errorTab = [];
         for (let i = 1; i < allTextLines.length; i++) {            
             let data = allTextLines[i];
             if (data.length == headers.length) {
@@ -350,13 +424,31 @@ export class Csv2JsonService {
                             ct['monospecies'] = true;
                             break;
                         default:                            
-                            throw new Error('Wrong CSV File Unknown field detected:');
+                            if(!errorTab.includes(headers[j])){
+                                errorTab.push(headers[j]);
+                            }       
+                            break; 
                     }
                 }
                 lines.push(ct);
             }
         }
-        console.log(lines); //The data in the form of 2 dimensional array.
+
+        if(errorTab.length !== 0){
+            let string = "";
+            for(let i in errorTab){
+                if(parseInt(i) === errorTab.length - 1){
+                    string+=errorTab[i]+"."    
+                }else{
+                    string+=errorTab[i]+", ";
+                }
+            }
+
+            this.store.dispatch(new PlatformAction.AddPlatformFailAction(string))
+            return [];
+        }
+
+        //console.log(lines); //The data in the form of 2 dimensional array.
         return lines;
     }
 
